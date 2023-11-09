@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Text;
+using System.Windows.Documents;
 
 namespace DogKennel.Model
 {
@@ -40,6 +41,11 @@ namespace DogKennel.Model
                 dt = null;
                 return false;
             }
+        }
+
+        public static bool ConvertExcel(DataTable dt, out DataTable[] dtArray)
+        {
+
         }
     }
 }

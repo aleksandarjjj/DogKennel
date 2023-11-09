@@ -37,7 +37,6 @@ namespace DogKennel.Model
         //SQL COMMANDS
         public DataTable CommandBulkInsert(DataTable dt)
         {
-
             return new DataTable();
         }
     }
