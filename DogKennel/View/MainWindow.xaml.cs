@@ -32,10 +32,13 @@ namespace DogKennel
             FileDialog dialog = new Microsoft.Win32.OpenFileDialog();
 
             bool? result = dialog.ShowDialog();
-            DataReader.ReadExcel(dialog.FileName, out DataTable? dt);
+
+            DataTable? dt;
+            bool datareader = DataReader.ReadExcel(dialog.FileName, out dt);
 
             DataAccess da = new DataAccess();
             bool hi = da.TestConnection();
+            hi = da.BulkInsert(dt,da.CommandBulkInsert);
         }
     }
 }

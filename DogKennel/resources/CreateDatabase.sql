@@ -5,16 +5,17 @@
 	CREATE TABLE Dogs
 (	PedigreeID		NVARCHAR(50)	NOT NULL,
 	DateOfBirth		NVARCHAR(50)	,
-	Alive			INT				,
-	Sex				INT				NOT NULL,
+	Alive			NVARCHAR(1)		,
+	Sex				NVARCHAR(1)		,
 	Colour			NVARCHAR(10)	,
-	AK				NVARCHAR(5)		,
-	BreedStatus		BIT				,
-	DKTitles		NVARCHAR(50)	,
-	Titles			NVARCHAR(50)	,
+	AK				NVARCHAR(50)	,
+	BreedStatus		NVARCHAR(1)		,
+	DKTitles		NVARCHAR(200)	,
+	Titles			NVARCHAR(200)	,
 	[Name]			NVARCHAR(50)	,
 	Picture			NVARCHAR(50)	,
-	CONSTRAINT PK_Pedigree PRIMARY KEY (PedigreeID));
+	--CONSTRAINT PK_Pedigree PRIMARY KEY (PedigreeID)
+	);
 
 	CREATE TABLE DogHealth
 (	PedigreeID		NVARCHAR(50)	NOT NULL,
@@ -22,7 +23,8 @@
 	AZ				NVARCHAR(15)	,
 	HZ				NVARCHAR(15)	,
 	SP				NVARCHAR(10)	,
-	CONSTRAINT FK_DogHealth_PedigreeID FOREIGN KEY (PedigreeID) REFERENCES Dogs(PedigreeID));
+	--CONSTRAINT FK_DogHealth_PedigreeID FOREIGN KEY (PedigreeID) REFERENCES Dogs(PedigreeID)
+	);
 
 	CREATE TABLE DogPedigree
 (	PedigreeID		NVARCHAR(50)	NOT NULL,
@@ -30,4 +32,5 @@
 	Mother			NVARCHAR(50)	NOT NULL,
 	TattooNo		NVARCHAR(50)	,
 	[Owner]			NVARCHAR(50)	,
-	CONSTRAINT FK_DogPedigree_PedigreeID FOREIGN KEY (PedigreeID) REFERENCES Dogs(PedigreeID));
+	--CONSTRAINT FK_DogPedigree_PedigreeID FOREIGN KEY (PedigreeID) REFERENCES Dogs(PedigreeID)
+	);

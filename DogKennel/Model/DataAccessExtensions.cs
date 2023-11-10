@@ -12,16 +12,16 @@ namespace DogKennel.Model
         //Test connection by pinging SQL-server
         public static bool TestConnection(this DataAccess da)
         {
-            using (da.Con)
+            using (SqlConnection _con = new SqlConnection(da._conString))
             {
                 int timeout = 2000;
                 Task task = Task.Run(() =>
                 {
-                    try { da.Con.Open(); }
+                    try { _con.Open(); }
                     catch (SqlException) { }
                 });
 
-                if (task.Wait(timeout * 2000))
+                if (task.Wait(timeout))
                 {
                     return true;
                 }

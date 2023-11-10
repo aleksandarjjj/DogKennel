@@ -10,7 +10,7 @@ namespace DogKennel.Model
 {
     public class DataReader
     {
-        //Reads Excel file from a specific path
+        //Reads and converts Excel file from a specific path
         public static bool ReadExcel(string _filepath, out DataTable? dt)
         {
             try
@@ -21,19 +21,38 @@ namespace DogKennel.Model
                     using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
                     {
                         DataSet result = reader.AsDataSet();
-                        dt = result.Tables[0];
-
-                        //Remove first row (column names) to only handle raw data
-                        dt.Rows.RemoveAt(0);
-                        dt.Columns.RemoveAt(0);
+                        DataTable dtRaw = result.Tables[0];
 
                         //Throws exception if Excel-file has the wrong format (e.g. not named "Grunddata" according to the given customer specifications
-                        if (dt.TableName != "Grunddata")
+                        if (dtRaw.TableName != "Grunddata")
                         {
                             throw new Exception();
                         }
+
+                        //Trim
+                        dtRaw.Rows.RemoveAt(0);
+                        dtRaw.Columns.RemoveAt(0);
+
+                        //Clone to ensure type safety and modify
+                        dt = dtRaw.Clone();
+
+                        //Fit columns
+                        int i = 0;
+                        foreach(DataColumn column in  dtRaw.Columns)
+                        {
+                            dt.Columns[i].DataType = typeof(string);
+                            dt.Columns[i].ColumnName = Enum.GetName(typeof(DataReaderColumn), i + 1);
+                            i++;
+                        }
+                        
+                        //Fit rows
+                        foreach(DataRow row in dtRaw.Rows)
+                        {
+                            dt.Rows.Add(row.ItemArray);
+                        }
                     }
                 }
+
                 return true;
             }
             catch (Exception)
@@ -43,9 +62,5 @@ namespace DogKennel.Model
             }
         }
 
-        public static bool ConvertExcel(DataTable dt, out DataTable[] dtArray)
-        {
-
-        }
     }
 }
