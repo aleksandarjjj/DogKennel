@@ -11,7 +11,7 @@ namespace DogKennel.Model
     public class DataReader
     {
         //Reads and converts Excel file from a specific path
-        public static bool ReadExcel(string _filepath, out DataTable? dt)
+        public static bool ReadExcel(string _filepath, out DataTable dt)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace DogKennel.Model
                         foreach(DataColumn column in  dtRaw.Columns)
                         {
                             dt.Columns[i].DataType = typeof(string);
-                            dt.Columns[i].ColumnName = Enum.GetName(typeof(DataReaderColumn), i + 1);
+                            dt.Columns[i].ColumnName = Enum.GetName(typeof(TblColumnsExcel), i + 1);
                             i++;
                         }
                         

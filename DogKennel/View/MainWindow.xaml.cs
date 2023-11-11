@@ -38,7 +38,13 @@ namespace DogKennel
 
             DataAccess da = new DataAccess();
             bool hi = da.TestConnection();
-            hi = da.BulkInsert(dt,da.CommandBulkInsert);
+
+            List<Enum> enums = new List<Enum>() { new TblDogs(), new TblDogHealth(), new TblDogPedigree()};
+
+            foreach (Enum ee in enums)
+            {
+                bool a = da.BulkInsert(dt, ee, da.CommandBulkInsertBuilder);
+            }   
         }
     }
 }
