@@ -39,25 +39,35 @@ namespace DogKennel.ViewModels
         }
         DataAccess _dataAccess = new DataAccess();
 
-
         public bool ReadExcel(string _filePath)
         {
             List<Enum> enums = new List<Enum>() { new TblDogs(), new TblDogHealth(), new TblDogPedigree() };
             DataTable? readTable;
+            bool modelBoolean;
 
             //Read Excel table
-            bool modelBoolean = DataReader.ReadExcel(_filePath, out readTable); if (!modelBoolean) { return false; }
+            modelBoolean = DataReader.ReadExcel(_filePath, out readTable); if (!modelBoolean) { return false; }
 
             //Insert into all tables in database
             foreach (Enum enumerator in enums) { modelBoolean = _dataAccess.CommandBulkInsertBuilder(readTable, enumerator); if (!modelBoolean) { return false; } }
 
-            //Select from all tables and insert in class collections
+            //Synchronize local collections with database
+            modelBoolean = SelectAll(); if (!modelBoolean) { return false; }
+
+            return true;
+        }
+        public bool SelectAll()
+        {
+            List<Enum> enums = new List<Enum>() { new TblDogs(), new TblDogHealth(), new TblDogPedigree() };
+            DataTable? readTable;
+            bool modelBoolean;
+
+            //Select all from all tables and insert into class collections
             foreach (Enum enumerator in enums)
             {
-                readTable = null;
+                readTable = new DataTable();
                 modelBoolean = _dataAccess.CommandSelectAllBuilder(enumerator, out readTable); if (!modelBoolean) { return false; }
 
-                //Add rows to class collections
                 foreach (DataRow dataRow in readTable.Rows)
                 {
                     object[] convertedRow = dataRow.ItemArray;
@@ -68,7 +78,7 @@ namespace DogKennel.ViewModels
                             TblDogs.Add(DataAccess.DogConstructor(convertedRow));
                             DogCount++;
                             break;
-                        case "TblDogHealth":;
+                        case "TblDogHealth":
                             TblDogHealth.Add(DataAccess.HealthConstructor(convertedRow));
                             break;
                         case "TblDogPedigree":
@@ -77,7 +87,6 @@ namespace DogKennel.ViewModels
                     }
                 }
             }
-
             return true;
         }
 

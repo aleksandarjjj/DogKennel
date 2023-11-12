@@ -97,10 +97,7 @@ namespace DogKennel.Model
         public static Dog DogConstructor(object[] convertedRow)
         {
             Dog dog = new Dog();
-
-            Type dogType = dog.GetType();
-
-            PropertyInfo[] properties = dogType.GetProperties();
+            PropertyInfo[] properties = dog.GetType().GetProperties();
 
             int i = 0;
             foreach (PropertyInfo property in properties)
@@ -119,10 +116,7 @@ namespace DogKennel.Model
         public static Health HealthConstructor(object[] convertedRow)
         {
             Health health = new Health();
-
-            Type dogType = health.GetType();
-
-            PropertyInfo[] properties = dogType.GetProperties();
+            PropertyInfo[] properties = health.GetType().GetProperties();
 
             int i = 0;
             foreach (PropertyInfo property in properties)
@@ -141,10 +135,7 @@ namespace DogKennel.Model
         public static Pedigree PedigreeConstructor(object[] convertedRow)
         {
             Pedigree pedigree = new Pedigree();
-
-            Type dogType = pedigree.GetType();
-
-            PropertyInfo[] properties = dogType.GetProperties();
+            PropertyInfo[] properties = pedigree.GetType().GetProperties();
 
             int i = 0;
             foreach (PropertyInfo property in properties)

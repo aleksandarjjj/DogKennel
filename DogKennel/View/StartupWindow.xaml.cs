@@ -29,8 +29,15 @@ namespace DogKennel.View
         }
         private void MainWindow_Sync()
         {
-            bool viewModelBoolean = _viewModel.TestConnection();
+            bool viewModelBoolean;
 
+            //Test connection by pinging server
+            viewModelBoolean = _viewModel.TestConnection();
+
+            //Synch with local collections
+            if (viewModelBoolean) { viewModelBoolean = _viewModel.SelectAll(); }
+
+            //Prompt messages to user
             switch (viewModelBoolean)
             {
                 case true:
@@ -48,14 +55,16 @@ namespace DogKennel.View
             }
         }
 
-        //POPULATE
         private void btnAddFile_Click(object sender, RoutedEventArgs e)
         {
             FileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
 
             bool? viewModelBoolean;
+
+            //Select file to read
             bool? viewBoolean = openFileDialog.ShowDialog();
 
+            //Switch to read file if a file was selected
             switch (viewBoolean)
             {
                 case true:
@@ -66,6 +75,7 @@ namespace DogKennel.View
                     return;
             }
 
+            //Prompt messages to user
             switch (viewModelBoolean)
             {
                 case true:
