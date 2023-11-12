@@ -1,21 +1,23 @@
 ﻿<Window
-    x:Class="DogKennel.MainWindow"
+    x:Class="DogKennel.View.StartupWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:DogKennel"
+    xmlns:local="clr-namespace:DogKennel.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
+    Title="Hundekennel"
     Width="800"
-    Height="450"
+    Height="800"
+    Background="DarkGray"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Grid>
         <Button
-            Name="btn"
             Width="50"
             Height="50"
             MaxWidth="80"
-            Click="btnInsertSampleData_Click" >
-        </Button>
+            Click="btnAddFile_Click" />
+
     </Grid>
 </Window>

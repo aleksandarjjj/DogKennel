@@ -61,6 +61,5 @@ namespace DogKennel.Model
                 return false;
             }
         }
-
     }
 }
