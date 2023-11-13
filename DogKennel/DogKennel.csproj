@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="resources\header_mainwindow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ApplicationDefinition Include="View\App.xaml" />
   </ItemGroup>
 
@@ -17,6 +21,10 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\header_mainwindow.png" />
   </ItemGroup>
 
 </Project>

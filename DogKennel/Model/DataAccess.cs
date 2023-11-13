@@ -1,11 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Windows.Documents;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace DogKennel.Model
 {
@@ -88,6 +87,23 @@ namespace DogKennel.Model
                 catch (Exception)
                 {
                     dataTable = null;
+                    return false;
+                }
+            }
+        }
+        public bool CommandTruncateBuilder(Enum e)
+        {
+            using (SqlConnection _con = new SqlConnection(_conString))
+            {
+                try
+                {
+                    _con.Open();
+                    _command = new SqlCommand($"DELETE FROM " + e.GetType().Name, _con);
+                    _command.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception)
+                {
                     return false;
                 }
             }

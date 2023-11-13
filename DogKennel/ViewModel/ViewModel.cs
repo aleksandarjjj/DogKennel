@@ -11,16 +11,9 @@ using DogKennel.Model;
 
 namespace DogKennel.ViewModels
 {
-    public class ViewModel
+    public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
 
         public ObservableCollection<Dog> TblDogs { get; set; } = new ObservableCollection<Dog>();
         public ObservableCollection<Health> TblDogHealth { get; set; } = new ObservableCollection<Health>();
@@ -89,7 +82,45 @@ namespace DogKennel.ViewModels
             }
             return true;
         }
+        public bool Truncate()
+        {
+            List<Dog> tempTblDogs = TblDogs.ToList();
+            List<Health> tempTblDogHealth = TblDogHealth.ToList();
+            List<Pedigree> tempTblDogPedigree = TblDogPedigree.ToList();
+            List<Enum> enums = new List<Enum>() { new TblDogHealth(), new TblDogPedigree(), new TblDogs(), };
+            bool modelBoolean;
 
+            foreach (Enum e in enums)
+            {
+                //Truncate database
+                modelBoolean = _dataAccess.CommandTruncateBuilder(e); if (!modelBoolean) { return false; }
+
+                //Clear local collections if database is truncated
+                switch (e.GetType().Name)
+                {
+                    case "TblDogs":
+                        foreach (Dog dog in tempTblDogs)
+                        {
+                            TblDogs.Remove(dog);
+                            DogCount--;
+                        }
+                        break;
+                    case "TblDogHealth":
+                        foreach (Health health in tempTblDogHealth)
+                        {
+                            TblDogHealth.Remove(health);
+                        }
+                        break;
+                    case "TblDogPedigree":
+                        foreach (Pedigree pedigree in tempTblDogPedigree)
+                        {
+                            TblDogPedigree.Remove(pedigree);
+                        }
+                        break;
+                }
+            }
+            return true;
+        }
         public bool TestConnection()
         {
             bool modelBoolean = _dataAccess.CommandTestConnection();
@@ -100,6 +131,14 @@ namespace DogKennel.ViewModels
                     return true;
                 case false:
                     return false;
+            }
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }

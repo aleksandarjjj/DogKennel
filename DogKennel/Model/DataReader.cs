@@ -3,6 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Documents;
 
@@ -48,6 +49,10 @@ namespace DogKennel.Model
                         //Fit rows
                         foreach(DataRow row in dtRaw.Rows)
                         {
+                            //Trim for whitespace
+                            var cellList = row.ItemArray.ToList();
+                            row.ItemArray = cellList.Select(x => x.ToString().Trim()).ToArray();
+
                             dt.Rows.Add(row.ItemArray);
                         }
                     }

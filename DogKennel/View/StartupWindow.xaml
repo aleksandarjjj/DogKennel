@@ -6,18 +6,162 @@
     xmlns:local="clr-namespace:DogKennel.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Hundekennel"
-    Width="800"
+    Width="600"
     Height="800"
     Background="DarkGray"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Grid>
-        <Button
-            Width="50"
-            Height="50"
-            MaxWidth="80"
-            Click="btnAddFile_Click" />
 
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+        </Style>
+
+        <!--  THIS STYLE DISABLES COLUMN RESIZING BUT ALSO DISABLES SCROLLING  -->
+        <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="IsHitTestVisible" Value="False" />
+        </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="#FFF" />
+            <Setter Property="AlternationCount" Value="2" />
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+
+        <Image
+            Grid.Row="1"
+            Grid.Column="0"
+            Source="/resources/header_mainwindow.png" />
+        <ListView
+            Name="TblDogs"
+            Grid.Row="1"
+            Grid.Column="1"
+            MaxWidth="325"
+            FlowDirection="LeftToRight"
+            ItemsSource="{Binding TblDogs}"
+            SelectedItem="{Binding CurrentDog, Mode=TwoWay}"
+            SelectionChanged="TblDogs_SelectionChanged"
+            SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn
+                            Width="118"
+                            DisplayMemberBinding="{Binding Path=PedigreeID}"
+                            Header="StambogsID" />
+                        <GridViewColumn
+                            Width="75"
+                            DisplayMemberBinding="{Binding Path=DateOfBirth}"
+                            Header="Fødselsdato" />
+                        <GridViewColumn
+                            Width="Auto"
+                            DisplayMemberBinding="{Binding Path=Alive}"
+                            Header="Lever" />
+                        <GridViewColumn
+                            Width="Auto"
+                            DisplayMemberBinding="{Binding Path=Sex}"
+                            Header="Køn" />
+                        <GridViewColumn
+                            Width="Auto"
+                            DisplayMemberBinding="{Binding Path=Colour}"
+                            Header="Farve" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <WrapPanel
+            Grid.Row="1"
+            Grid.Column="2"
+            Width="Auto"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+            <Button
+                Name="btnAdd"
+                Width="Auto"
+                Height="30"
+                MaxWidth="80"
+                Click="btnAdd_Click"
+                Content="Tilføj hund" />
+            <Button
+                Name="btnDelete"
+                Width="Auto"
+                Height="30"
+                MaxWidth="80"
+                Click="btnDelete_Click"
+                Content="Slet hund"
+                IsEnabled="False" />
+        </WrapPanel>
+
+        <WrapPanel
+            Grid.Row="1"
+            Grid.Column="2"
+            Width="Auto"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Orientation="Vertical">
+            <TextBlock />
+            <Button
+                Name="btnTruncate"
+                Width="Auto"
+                Height="Auto"
+                MaxWidth="80"
+                Click="btnTruncate_Click"
+                IsEnabled="False">
+                <TextBlock
+                    Text="Ryd database"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+            </Button>
+            <Button
+                Name="btnAddFile"
+                Width="Auto"
+                Height="Auto"
+                MaxWidth="80"
+                Click="btnAddFile_Click"
+                IsEnabled="False">
+                <TextBlock
+                    Text="Indlæs fil"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+            </Button>
+            <Button
+                Name="btnTestConnection"
+                Width="Auto"
+                Height="Auto"
+                MaxWidth="80"
+                Click="btnTestConnection_Click">
+                <TextBlock
+                    Text="Test forbindelse"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+            </Button>
+        </WrapPanel>
+
+        <Label Grid.Row="2" Grid.Column="1">
+            <Label.Content>
+                <TextBlock>
+                    <Run Text="Antal hunde i databsen: " />
+                    <Run Text="{Binding DogCount}" />
+                </TextBlock>
+            </Label.Content>
+        </Label>
     </Grid>
 </Window>
