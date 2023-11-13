@@ -14,22 +14,29 @@
     mc:Ignorable="d">
 
     <Window.Resources>
+        <!--  Styles  -->
+        <!--  Button  -->
         <Style TargetType="Button">
             <Setter Property="Margin" Value="5" />
         </Style>
 
-        <Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-        </Style>
-
-        <!--  THIS STYLE DISABLES COLUMN RESIZING BUT ALSO DISABLES SCROLLING  -->
+        <!--  Disable column resizing (might prevent scrolling)  -->
         <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="IsHitTestVisible" Value="False" />
         </Style>
-        <Style TargetType="{x:Type DataGrid}">
-            <Setter Property="Background" Value="#FFF" />
-            <Setter Property="AlternationCount" Value="2" />
+
+        <!--  Style for column aligning properties
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
+        <DataTemplate x:Key="TblDogs">
+            <TextBlock HorizontalAlignment="Right" Text="{Binding Alive}" />
+        </DataTemplate>
+        -->
+
+        <!--  CONVERTERS  -->
+        <local:AliveConverter x:Key="AliveConverter" />
+        <local:DateOfBirthConverter x:Key="DateOfBirthConverter" />
 
     </Window.Resources>
 
@@ -67,14 +74,6 @@
                             DisplayMemberBinding="{Binding Path=PedigreeID}"
                             Header="StambogsID" />
                         <GridViewColumn
-                            Width="75"
-                            DisplayMemberBinding="{Binding Path=DateOfBirth}"
-                            Header="Fødselsdato" />
-                        <GridViewColumn
-                            Width="Auto"
-                            DisplayMemberBinding="{Binding Path=Alive}"
-                            Header="Lever" />
-                        <GridViewColumn
                             Width="Auto"
                             DisplayMemberBinding="{Binding Path=Sex}"
                             Header="Køn" />
@@ -82,9 +81,18 @@
                             Width="Auto"
                             DisplayMemberBinding="{Binding Path=Colour}"
                             Header="Farve" />
+                        <GridViewColumn
+                            Width="Auto"
+                            DisplayMemberBinding="{Binding Path=Alive, Converter={StaticResource AliveConverter}}"
+                            Header="Lever" />
+                        <GridViewColumn
+                            Width="75"
+                            DisplayMemberBinding="{Binding Path=DateOfBirth, Converter={StaticResource DateOfBirthConverter}}"
+                            Header="Fødselsdato" />
                     </GridView.Columns>
                 </GridView>
             </ListView.View>
+
         </ListView>
         <WrapPanel
             Grid.Row="1"
@@ -113,7 +121,7 @@
         <WrapPanel
             Grid.Row="1"
             Grid.Column="2"
-            Width="Auto"
+            Width="100"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Orientation="Vertical">

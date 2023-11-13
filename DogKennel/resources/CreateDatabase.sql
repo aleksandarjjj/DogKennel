@@ -6,6 +6,7 @@
 	IF OBJECT_ID(N'dbo.TblDogHealth', N'U')											IS NOT NULL DROP TABLE TblDogHealth;
 	IF OBJECT_ID(N'dbo.TblDogPedigree', N'U')										IS NOT NULL DROP TABLE TblDogPedigree;
 	IF OBJECT_ID(N'dbo.TblDogs', N'U')												IS NOT NULL DROP TABLE TblDogs;
+	IF EXISTS (SELECT 1 FROM sys.procedures WHERE NAME = 'spDelete_Dog')			DROP PROCEDURE spDelete_Dog;
 	END
 	GO
 
@@ -129,4 +130,12 @@
 
 	--TRUNCATE TEMPORARY TABLE
 	TRUNCATE TABLE TempTblDogPedigree;
+	GO
+
+	GO
+	CREATE PROCEDURE spDelete_Dog @PedigreeID NVARCHAR(50)
+	AS
+	DELETE FROM TblDogHealth WHERE PedigreeID = @PedigreeID
+	DELETE FROM TblDogPedigree WHERE PedigreeID = @PedigreeID
+	DELETE FROM TblDogs WHERE PedigreeID = @PedigreeID
 	GO

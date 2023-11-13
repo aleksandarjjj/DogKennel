@@ -1,5 +1,6 @@
 ﻿using DogKennel.ViewModels;
 using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -52,7 +53,6 @@ namespace DogKennel.View
         private void btnAddFile_Click(object sender, RoutedEventArgs e)
         {
             FileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-
             bool? viewModelBoolean;
 
             //Select file to read
@@ -82,14 +82,29 @@ namespace DogKennel.View
         }
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            bool viewModelBoolean;
 
+            viewModelBoolean = _viewModel.Delete();
+
+            switch (viewModelBoolean)
+            {
+                case true:
+                    TblDogs.SelectedItem = null;
+                    btnDelete.IsEnabled = false;
+                    break;
+                case false:
+                    MessageBox.Show($"Hunden kunne ikke slettes fra databasen. Prøv igen.", "Slet hund");
+                    TblDogs.SelectedItem = null;
+                    btnDelete.IsEnabled = false;
+                    break;
+            }
         }
         private void btnTruncate_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult viewResult;
             bool viewModelBoolean;
 
-            viewResult = MessageBox.Show("Er du sikker på, at du vil rydde databasen?\nDette sletter alle hunde.", "Clear Database", (MessageBoxButton)4);
+            viewResult = MessageBox.Show("Er du sikker på, at du vil rydde databasen?\nDette sletter alle hunde.", "Ryd database", (MessageBoxButton)4);
 
             switch (viewResult)
             {
@@ -103,7 +118,7 @@ namespace DogKennel.View
                     }
                     else
                     {
-                        MessageBox.Show($"Programmet kunne ikke forbinde til databsen.");
+                        MessageBox.Show($"Programmet kunne ikke forbinde til databsen.", "Ryd database");
                     }
                     break;
                 case MessageBoxResult.No:

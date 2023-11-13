@@ -108,6 +108,24 @@ namespace DogKennel.Model
                 }
             }
         }
+        public bool CommandDelete(string pedigreeID)
+        {
+            using (SqlConnection _con = new SqlConnection(_conString))
+            {
+                try
+                {
+                    _con.Open();
+                    _command = new SqlCommand($"EXEC spDelete_Dog @PedigreeID", _con);
+                    _command.Parameters.Add("@PedigreeID", SqlDbType.NVarChar).Value = pedigreeID;
+                    _command.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
 
         //HELPER METHODS
         public static Dog DogConstructor(object[] convertedRow)

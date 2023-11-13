@@ -32,22 +32,28 @@ namespace DogKennel.ViewModels
         }
         DataAccess _dataAccess = new DataAccess();
 
-        public bool ReadExcel(string _filePath)
+        public bool Delete()
         {
-            List<Enum> enums = new List<Enum>() { new TblDogs(), new TblDogHealth(), new TblDogPedigree() };
-            DataTable? readTable;
             bool modelBoolean;
+            modelBoolean = _dataAccess.CommandDelete(CurrentDog.PedigreeID);
 
-            //Read Excel table
-            modelBoolean = DataReader.ReadExcel(_filePath, out readTable); if (!modelBoolean) { return false; }
+            switch (modelBoolean)
+            {
+                case true:
+                    //Using LINQ to find object based on ID
+                    TblDogHealth.Remove(TblDogHealth.ToList().Find(health => health.PedigreeID == CurrentDog.PedigreeID));
+                    TblDogPedigree.Remove(TblDogPedigree.ToList().Find(pedigree => pedigree.PedigreeID == CurrentDog.PedigreeID));
 
-            //Insert into all tables in database
-            foreach (Enum enumerator in enums) { modelBoolean = _dataAccess.CommandBulkInsertBuilder(readTable, enumerator); if (!modelBoolean) { return false; } }
+                    //Delete main collection
+                    TblDogs.Remove(CurrentDog);
 
-            //Synchronize local collections with database
-            modelBoolean = SelectAll(); if (!modelBoolean) { return false; }
+                    DogCount--;
+                    CurrentDog = null;
 
-            return true;
+                    return true;
+                case false:
+                    return false;
+            }
         }
         public bool SelectAll()
         {
@@ -132,6 +138,23 @@ namespace DogKennel.ViewModels
                 case false:
                     return false;
             }
+        }
+        public bool ReadExcel(string _filePath)
+        {
+            List<Enum> enums = new List<Enum>() { new TblDogs(), new TblDogHealth(), new TblDogPedigree() };
+            DataTable? readTable;
+            bool modelBoolean;
+
+            //Read Excel table
+            modelBoolean = DataReader.ReadExcel(_filePath, out readTable); if (!modelBoolean) { return false; }
+
+            //Insert into all tables in database
+            foreach (Enum enumerator in enums) { modelBoolean = _dataAccess.CommandBulkInsertBuilder(readTable, enumerator); if (!modelBoolean) { return false; } }
+
+            //Synchronize local collections with database
+            modelBoolean = SelectAll(); if (!modelBoolean) { return false; }
+
+            return true;
         }
 
         protected void OnPropertyChanged(string propertyName)
