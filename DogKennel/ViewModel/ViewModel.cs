@@ -1,13 +1,10 @@
-﻿using System;
+﻿using DogKennel.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using DogKennel.Model;
 
 namespace DogKennel.ViewModels
 {
@@ -44,7 +41,7 @@ namespace DogKennel.ViewModels
                     TblDogHealth.Remove(TblDogHealth.ToList().Find(health => health.PedigreeID == CurrentDog.PedigreeID));
                     TblDogPedigree.Remove(TblDogPedigree.ToList().Find(pedigree => pedigree.PedigreeID == CurrentDog.PedigreeID));
 
-                    //Delete main collection
+                    //Delete main collection (containing references)
                     TblDogs.Remove(CurrentDog);
 
                     DogCount--;

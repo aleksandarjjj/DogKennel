@@ -5,10 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DogKennel.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Hundekennel"
-    Width="600"
+    Title="Hunde Kennel"
+    Width="550"
     Height="800"
     Background="DarkGray"
+    Icon="\resources\icon.png"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -61,11 +62,14 @@
             Grid.Row="1"
             Grid.Column="1"
             MaxWidth="325"
+            HorizontalAlignment="Left"
             FlowDirection="LeftToRight"
             ItemsSource="{Binding TblDogs}"
+            MouseDoubleClick="TblDogs_MouseDoubleClick"
             SelectedItem="{Binding CurrentDog, Mode=TwoWay}"
             SelectionChanged="TblDogs_SelectionChanged"
             SelectionMode="Single">
+
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
@@ -107,7 +111,8 @@
                 Height="30"
                 MaxWidth="80"
                 Click="btnAdd_Click"
-                Content="Tilføj hund" />
+                Content="Tilføj hund"
+                IsEnabled="False" />
             <Button
                 Name="btnDelete"
                 Width="Auto"

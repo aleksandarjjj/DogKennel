@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Navigation;
 
 namespace DogKennel.View
 {
     public class DateOfBirthConverter : IValueConverter
     {
+        //Shorten string by parsing as datetime and converting back to polish data
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             DateTime dateValue;
 
-            if(DateTime.TryParse((string) value, out dateValue))
+            if (DateTime.TryParse((string)value, out dateValue))
             {
                 return dateValue.ToString("yyyy/MM/dd");
             }
@@ -40,6 +36,7 @@ namespace DogKennel.View
             }*/
         }
 
+        //Reduntant interface method
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

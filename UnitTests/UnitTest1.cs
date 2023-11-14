@@ -1,4 +1,3 @@
-using DogKennel.Model;
 using DogKennel.ViewModels;
 
 namespace UnitTests
@@ -39,7 +38,7 @@ namespace UnitTests
         public void DataBaseSelectAll()
         {
             //ARRANGE
-            
+
             //ACT
 
             //ASSERT

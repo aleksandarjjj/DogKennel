@@ -1,11 +1,9 @@
 ﻿using ExcelDataReader;
 using System;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Documents;
 
 namespace DogKennel.Model
 {
@@ -39,15 +37,15 @@ namespace DogKennel.Model
 
                         //Fit columns
                         int i = 0;
-                        foreach(DataColumn column in  dtRaw.Columns)
+                        foreach (DataColumn column in dtRaw.Columns)
                         {
                             dt.Columns[i].DataType = typeof(string);
                             dt.Columns[i].ColumnName = Enum.GetName(typeof(TblColumnsExcel), i + 1);
                             i++;
                         }
-                        
+
                         //Fit rows
-                        foreach(DataRow row in dtRaw.Rows)
+                        foreach (DataRow row in dtRaw.Rows)
                         {
                             //Trim for whitespace
                             var cellList = row.ItemArray.ToList();
