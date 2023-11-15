@@ -11,13 +11,12 @@ namespace DogKennel.View
 {
     public partial class ViewDog : Window
     {
-        List<string>? pedigreeList;
-
         public ViewDog(ViewModel _viewModel)
         {
+            //Bind datacontext
             DataContext = _viewModel;
 
-            //Find matching properties for other collections from _viewModel.CurrentDog
+            //Find matching entries for other collections from _viewModel.CurrentDog
             Health currentDogHealth = _viewModel.TblDogHealth.ToList().First(pedigreeID => pedigreeID.PedigreeID == _viewModel.CurrentDog.PedigreeID);
             Pedigree currentDogPedigreee = _viewModel.TblDogPedigree.ToList().First(pedigreeID => pedigreeID.PedigreeID == _viewModel.CurrentDog.PedigreeID);
 
@@ -29,52 +28,23 @@ namespace DogKennel.View
             ListViewCreator(lstHealthProperties, lstHealthValues, new Health().GetType().GetProperties(), currentDogHealth);
             ListViewCreator(lstPedigreeProperties, lstPedigreeValues, new Pedigree().GetType().GetProperties(), currentDogPedigreee);
 
-            //Define list for finding the number of offspring
-            pedigreeList = new List<string>();
+            //Define XAML listview for finding the number of offspring
             foreach (Pedigree pedigree in _viewModel.TblDogPedigree)
             {
                 //Add offspring if PedigreeID matches either father or mother
-                if (_viewModel.CurrentDog.PedigreeID == pedigree.Father ||
-                    _viewModel.CurrentDog.PedigreeID == pedigree.Mother)
+                if (_viewModel.CurrentDog.PedigreeID == pedigree.Father || _viewModel.CurrentDog.PedigreeID == pedigree.Mother)
                 {
-                    pedigreeList.Add(pedigree.PedigreeID);
+                    string offspring = pedigree.PedigreeID;
 
-                }
-            }
-
-            //Populate offspring Listview
-            foreach (string offspring in pedigreeList)
-            {
-                if (offspring != null)
-                {
+                    //Add to listview
                     lstChildren.Items.Add(offspring);
                 }
             }
         }
 
-        //Disable selection for all listviews
-        private void NullClick_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            lstDogProperties.SelectedItem = null;
-            lstDogValues.SelectedItem = null;
-            lstHealthProperties.SelectedItem = null;
-            lstHealthValues.SelectedItem = null;
-            lstPedigreeProperties.SelectedItem = null;
-            lstPedigreeValues.SelectedItem = null;
-            lstChildren.SelectedItem = null;
-        }
-
-        //Define closing of window
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            this.Visibility = Visibility.Hidden;
-            e.Cancel = true;
-        }
-        
         //Generic method for populating multiple listviews with property names and values
         private void ListViewCreator<T>(ListView listViewProperties, ListBox listViewValues, PropertyInfo[] properties, T obj)
         {
-            //Loop through object properties
             foreach (PropertyInfo property in properties)
             {
                 //Define string name from specific type
@@ -141,6 +111,25 @@ namespace DogKennel.View
 
                 }
             }
+        }
+
+        //Disable selection for all listviews
+        private void NullClick_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            lstDogProperties.SelectedItem = null;
+            lstDogValues.SelectedItem = null;
+            lstHealthProperties.SelectedItem = null;
+            lstHealthValues.SelectedItem = null;
+            lstPedigreeProperties.SelectedItem = null;
+            lstPedigreeValues.SelectedItem = null;
+            lstChildren.SelectedItem = null;
+        }
+
+        //Define closing of window
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+            e.Cancel = true;
         }
     }
 }

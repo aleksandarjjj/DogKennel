@@ -16,24 +16,6 @@ namespace DogKennel.View
                 return dateValue.ToString("yyyy/MM/dd");
             }
             return "";
-            /*
-            switch (stringValue.Length)
-            {
-                case > 1:
-                    return stringValue.Split(' ').First();
-                default:
-                    return "";
-            }
-
-            string stringValue = (string)value;
-
-            switch (stringValue.Length)
-            {
-                case > 1:
-                    return stringValue.Split(' ').First();
-                default:
-                    return "";
-            }*/
         }
 
         //Reduntant interface method
