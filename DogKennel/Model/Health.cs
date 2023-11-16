@@ -17,5 +17,9 @@
             HZ = hZ;
             SP = sP;
         }
+        public override string ToString()
+        {
+            return PedigreeID;
+        }
     }
 }

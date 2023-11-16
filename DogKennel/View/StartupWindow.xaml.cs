@@ -38,12 +38,13 @@ namespace DogKennel.View
             switch (viewModelBoolean)
             {
                 case true:
-                    btnAddFile.IsEnabled = true;
-                    if (0 < _viewModel.DogCount) { btnTruncate.IsEnabled = true; btnAdd.IsEnabled = true; }
+                    if (0 < _viewModel.DogCount) { btnTruncate.IsEnabled = true; btnAdd.IsEnabled = true; btnAddFile.IsEnabled = true; }
                     else if (_viewModel.DogCount == 0)
                     {
                         MessageBox.Show($"Databasen har i øjeblikket ingen hunde." +
                             $"\nTryk på \"Tilføj hund\" eller \"Indlæs fil\" for at tilføje hunde.", "Startup Dialog");
+                        btnAdd.IsEnabled = true;
+                        btnAddFile.IsEnabled = true;
                     }
                     break;
                 case false:
@@ -56,6 +57,7 @@ namespace DogKennel.View
         //Open window for adding record
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            new AddDog(_viewModel).ShowDialog();
         }
 
         //Attempt to read excel file and sync to database
@@ -103,6 +105,10 @@ namespace DogKennel.View
                 case true:
                     TblDogs.SelectedItem = null;
                     btnDelete.IsEnabled = false;
+                    if (_viewModel.DogCount == 0)
+                    {
+                        btnTruncate.IsEnabled = false;
+                    }
                     break;
                 case false:
                     MessageBox.Show($"Hunden kunne ikke slettes fra databasen. Prøv igen.", "Slet hund");
@@ -156,7 +162,7 @@ namespace DogKennel.View
 
                 if (viewModelBoolean)
                 {
-                    MessageBox.Show($"Programmet er forbundet til databasen.", "Test forbindelse");
+                    MessageBox.Show($"Programmet er forbundet til databasen.\nDatabasen synkroniseres.", "Test forbindelse");
 
                     //Sync
                     viewModelBoolean = _viewModel.SelectAll(); if (!viewModelBoolean) { throw new Exception(); }

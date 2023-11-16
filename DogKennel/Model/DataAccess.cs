@@ -14,24 +14,67 @@ namespace DogKennel.Model
         private SqlCommand _command = new SqlCommand();
 
         //SQL SPECIFIC COMMANDS
-        public bool CommandTestConnection()
+        public bool CommandSelect(Enum e, out DataTable? dataTable, string pedigreeID)
         {
             using (SqlConnection _con = new SqlConnection(_conString))
             {
-                //Timeout time
-                int timeout = 2000;
-
-                Task task = Task.Run(() =>
+                try
                 {
-                    try { _con.Open(); }
-                    catch (SqlException) { }
-                });
+                    _con.Open();
+                    DataTable loadedDataTable = new DataTable();
 
-                if (task.Wait(timeout))
-                {
+                    //Determine table from enum type and execute
+                    _command = new SqlCommand($"SELECT * FROM dbo." + e.GetType().Name + "WHERE PedigreeID = @PedigreeID}", _con);
+                    _command.Parameters.Add("@PedigreeID", SqlDbType.NVarChar).Value = pedigreeID;
+                    loadedDataTable.Load(_command.ExecuteReader());
+
+                    dataTable = loadedDataTable;
                     return true;
                 }
-                return false;
+                catch (Exception)
+                {
+                    dataTable = null;
+                    return false;
+                }
+            }
+        }
+        public bool CommandInsert(string[] strings)
+        {
+            using (SqlConnection _con = new SqlConnection(_conString))
+            {
+                try
+                {
+                    //Build connectionstring and parameters manually by loops
+                    _command = new SqlCommand();
+                    string commandName = "EXEC spInsert_Into_TblDogs_TblDogHealth_TblDogPedigree ";
+
+                    for (int i = 0; i < strings.Length; i++)
+                    {
+                        if (strings[i] == "" || strings[i] == null)
+                        {
+                            _command.Parameters.Add($"@{i + 1}", SqlDbType.NVarChar).Value = System.DBNull.Value;
+                        }
+                        else
+                        {
+                            _command.Parameters.Add($"@{i + 1}", SqlDbType.NVarChar).Value = strings[i];
+                        }
+
+                        commandName = string.Concat(commandName, $"@{i + 1}, ");
+                    }
+                    commandName = commandName.Remove(commandName.Length - 2);
+
+                    //Execution
+                    _command.CommandText = commandName;
+                    _command.Connection = _con;
+                    _con.Open();
+                    _command.ExecuteNonQuery();
+                    return true;
+                }
+
+                catch (Exception)
+                {
+                    return false;
+                }
             }
         }
         public bool CommandDelete(string? pedigreeID)
@@ -51,6 +94,26 @@ namespace DogKennel.Model
                 {
                     return false;
                 }
+            }
+        }
+        public bool CommandTestConnection()
+        {
+            using (SqlConnection _con = new SqlConnection(_conString))
+            {
+                //Timeout time
+                int timeout = 2000;
+
+                Task task = Task.Run(() =>
+                {
+                    try { _con.Open(); }
+                    catch (SqlException) { }
+                });
+
+                if (task.Wait(timeout))
+                {
+                    return true;
+                }
+                return false;
             }
         }
 

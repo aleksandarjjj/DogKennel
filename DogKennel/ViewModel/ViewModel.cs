@@ -31,6 +31,81 @@ namespace DogKennel.ViewModels
             }
         }
 
+        //SingularDataHandling
+        public bool Insert(string[] stringArray)
+        {
+            //Try database insertion
+            if (!da.CommandInsert(stringArray)) { return false; };
+
+            //Select from database and insert into local collections
+            foreach (Enum e in enums)
+            {
+                DataTable dt;
+
+                //If selection fails returns false
+                if (!da.CommandSelectAllBuilder(e, out dt)) { return false; }
+
+
+                foreach (DataRow dataRow in dt.Rows)
+                {
+                    object[] convertedRow = dataRow.ItemArray;
+
+                    //Populate collections along with type conversion from SQL to C#
+                    switch (e.GetType().Name)
+                    {
+                        case "TblDogs":
+                            Dog dog = DataAccess.DogConstructor(convertedRow);
+
+                            if (!CheckDuplicate(e, dog))
+                            {
+                                Add(dog);
+                            }
+                            break;
+                        case "TblDogHealth":
+                            Health health = DataAccess.HealthConstructor(convertedRow);
+                            if (!CheckDuplicate(e, health))
+                            {
+                                Add(health);
+                            }
+                            break;
+                        case "TblDogPedigree":
+                            Pedigree pedigree = DataAccess.PedigreeConstructor(convertedRow);
+                            if (!CheckDuplicate(e, pedigree))
+                            {
+                                Add(pedigree);
+                            }
+                            break;
+                    }
+                }
+            }
+            return true;
+        }
+        public bool Delete()
+        {
+            //Try database deletion
+            switch (da.CommandDelete(CurrentDog.PedigreeID))
+            {
+                case true:
+                    //Collection deletion by lowest reference
+                    Remove(
+                    TblDogHealth
+                        .ToList()
+                        .Find(health => health.PedigreeID == CurrentDog.PedigreeID));
+
+                    Remove(
+                    TblDogPedigree
+                        .ToList()
+                        .Find(pedigree => pedigree.PedigreeID == CurrentDog.PedigreeID));
+
+                    Remove(CurrentDog);
+                    CurrentDog = null;
+                    return true;
+
+                case false:
+                    return false;
+            }
+        }
+
         //BulkDataHandling
         public bool ReadExcel(string _filePath)
         {
@@ -58,7 +133,7 @@ namespace DogKennel.ViewModels
                 readTable = new DataTable();
 
                 //If selection fails returns false
-                modelBool = da.CommandSelectAllBuilder(e, out readTable); if (!modelBool) { return false; }
+                if (!da.CommandSelectAllBuilder(e, out readTable)) { return false; }
 
                 foreach (DataRow dataRow in readTable.Rows)
                 {
@@ -69,15 +144,25 @@ namespace DogKennel.ViewModels
                     {
                         case "TblDogs":
                             Dog dog = DataAccess.DogConstructor(convertedRow);
-                            Add(dog);
+
+                            if (!CheckDuplicate(e, dog))
+                            {
+                                Add(dog);
+                            }
                             break;
                         case "TblDogHealth":
                             Health health = DataAccess.HealthConstructor(convertedRow);
-                            Add(health);
+                            if (!CheckDuplicate(e, health))
+                            {
+                                Add(health);
+                            }
                             break;
                         case "TblDogPedigree":
                             Pedigree pedigree = DataAccess.PedigreeConstructor(convertedRow);
-                            Add(pedigree);
+                            if (!CheckDuplicate(e, pedigree))
+                            {
+                                Add(pedigree);
+                            }
                             break;
                     }
                 }
@@ -94,16 +179,14 @@ namespace DogKennel.ViewModels
         }
         public bool TruncateAll()
         {
-            //Rearrange list to cycle lowest referenced tables first
-            enums = new List<Enum>() { new TblDogHealth(), new TblDogPedigree(), new TblDogs() };
-
-            foreach (Enum e in enums)
+            //Loop backwards to account for lowest reference
+            for (int i = enums.Count - 1; i >= 0; i--)
             {
                 //Try database truncation
-                if (!da.CommandTruncateBuilder(e)) { return false; }
+                if (!da.CommandTruncateBuilder(enums[i])) { return false; }
 
                 //Truncate local collection
-                switch (e.GetType().Name)
+                switch (enums[i].GetType().Name)
                 {
                     case "TblDogs":
                         TblDogs.Clear();
@@ -117,36 +200,7 @@ namespace DogKennel.ViewModels
                         break;
                 }
             }
-
-            enums = new List<Enum>() { new TblDogs(), new TblDogHealth(), new TblDogPedigree() };
             return true;
-        }
-
-        //SingularDataHandling
-        public bool Delete()
-        {
-            //Try database deletion
-            switch (da.CommandDelete(CurrentDog.PedigreeID))
-            {
-                case true:
-                    //Collection deletion by lowest reference
-                    Remove(
-                    TblDogHealth
-                        .ToList()
-                        .Find(health => health.PedigreeID == CurrentDog.PedigreeID));
-
-                    Remove(
-                    TblDogPedigree
-                        .ToList()
-                        .Find(pedigree => pedigree.PedigreeID == CurrentDog.PedigreeID));
-
-                    Remove(CurrentDog);
-                    CurrentDog = null;
-                    return true;
-
-                case false:
-                    return false;
-            }
         }
 
         //CollectionHandling
@@ -182,11 +236,47 @@ namespace DogKennel.ViewModels
                     break;
             }
         }
-        public bool ObjectBuilder<T>(string[] objArray)
+        public bool CheckDuplicate<T>(Enum e, T obj)
         {
-            return true;
-        }
+            //Checks for duplicate by PedigreeID
+            switch (e.GetType().Name)
+            {
+                case "TblDogs":
+                    Dog dog = obj as Dog;
 
+                    for (int i = 0; i < TblDogs.Count; i++)
+                    {
+                        if (TblDogs[i].ToString() == dog.PedigreeID)
+                        {
+                            return true;
+                        };
+                    }
+                    break;
+                case "TblDogHealth":
+                    Health health = obj as Health;
+
+                    for (int i = 0; i < TblDogHealth.Count; i++)
+                    {
+                        if (TblDogHealth[i].ToString() == health.PedigreeID)
+                        {
+                            return true;
+                        };
+                    }
+                    break;
+                case "TblDogPedigree":
+                    Pedigree pedigree = obj as Pedigree;
+
+                    for (int i = 0; i < TblDogPedigree.Count; i++)
+                    {
+                        if (TblDogPedigree[i].ToString() == pedigree.PedigreeID)
+                        {
+                            return true;
+                        };
+                    }
+                    break;
+            }
+            return false;
+        }
 
         //Miscellaneous
         //Test database connection
@@ -199,6 +289,40 @@ namespace DogKennel.ViewModels
                 case false:
                     return false;
             }
+        }
+        public Dog BlankDog()
+        {
+            return new Dog();
+        }
+        public Health BlankHealth()
+        {
+            return new Health();
+        }
+        public Pedigree BlankPedigree()
+        {
+            return new Pedigree();
+        }
+        public Health CurrentHealth()
+        {
+            return TblDogHealth.ToList().First(health => health.PedigreeID == CurrentDog.PedigreeID);
+        }
+        public Pedigree CurrentPedigree()
+        {
+            return TblDogPedigree.ToList().First(pedigree => pedigree.PedigreeID == CurrentDog.PedigreeID);
+        }
+        public List<string> GetOffspring()
+        {
+            List<string> offsprings = new List<string>();
+            foreach(Pedigree pedigree in TblDogPedigree)
+            {
+                if (CurrentDog.PedigreeID == pedigree.Father || CurrentDog.PedigreeID == pedigree.Mother)
+                {
+                    offsprings.Add(pedigree.PedigreeID);
+                }
+            }
+
+            //Returns list of offspring for CurrentDog
+            return offsprings;
         }
 
         #region region NotificationHandling

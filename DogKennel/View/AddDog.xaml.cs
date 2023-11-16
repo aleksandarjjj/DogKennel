@@ -1,47 +1,36 @@
 ﻿using DogKennel.ViewModels;
-using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace DogKennel.View
 {
-    public partial class ViewDog : Window
+    public partial class AddDog : Window
     {
-        public ViewDog(ViewModel _viewModel)
+        ViewModel _viewModel;
+
+        public AddDog(ViewModel _viewModelPassed)
         {
             //Bind datacontext
+            _viewModel = _viewModelPassed;
             DataContext = _viewModel;
-
-            //Find matching entries for other collections from _viewModel.CurrentDog
-            object CurrentHealth = _viewModel.CurrentHealth();
-            object CurrentPedigree = _viewModel.CurrentPedigree();
 
             //Initialize ListViews by initializing window
             InitializeComponent();
 
             //Define XAML listviews containing all properties and their values
-            ListViewCreator(lstDogProperties, lstDogValues, _viewModel.BlankDog().GetType().GetProperties(), _viewModel.CurrentDog);
-            ListViewCreator(lstHealthProperties, lstHealthValues, _viewModel.BlankHealth().GetType().GetProperties(), CurrentHealth);
-            ListViewCreator(lstPedigreeProperties, lstPedigreeValues, _viewModel.BlankPedigree().GetType().GetProperties(), CurrentPedigree);
-
-            //Define XAML listview for finding the number of offspring
-            foreach (string offspring in _viewModel.GetOffspring())
-            {
-                lstChildren.Items.Add(offspring);
-            }
+            ListViewCreator(lstDogProperties, _viewModel.BlankDog().GetType().GetProperties());
+            ListViewCreator(lstHealthProperties, _viewModel.BlankHealth().GetType().GetProperties());
+            ListViewCreator(lstPedigreeProperties, _viewModel.BlankPedigree().GetType().GetProperties());
         }
 
         //Generic method for populating multiple listviews with property names and values
-        private void ListViewCreator<T>(ListView lstProp, ListBox lstVal, PropertyInfo[] properties, T obj)
+        private void ListViewCreator(ListView lstProp, PropertyInfo[] properties)
         {
             foreach (PropertyInfo property in properties)
             {
                 //Define string name from specific type
                 string propName = property.Name.Split(' ')[0];
-
-                //Define string value from specific property
-                string propVal = property.GetValue(obj).ToString();
 
                 //Switch for handling cases to singularly convert certain properties
                 switch (propName)
@@ -52,43 +41,30 @@ namespace DogKennel.View
                         break;
                     case "DateOfBirth":
                         lstProp.Items.Add("Fødselsdato");
-
-                        DateOfBirthConverter dateOfBirthConverter = new DateOfBirthConverter();
-                        lstVal.Items.Add(dateOfBirthConverter.Convert(propVal, typeof(string), null, CultureInfo.InvariantCulture));
                         break;
                     case "Alive":
                         lstProp.Items.Add("Lever");
-
-                        AliveConverter aliveConverter = new AliveConverter();
-                        lstVal.Items.Add(aliveConverter.Convert(propVal, typeof(string), null, CultureInfo.InvariantCulture)); ;
                         break;
                     case "Sex":
                         lstProp.Items.Add("Køn");
-                        lstVal.Items.Add(propVal);
                         break;
                     case "Colour":
                         lstProp.Items.Add("Farve");
-                        lstVal.Items.Add(propVal);
                         break;
                     case "Owner":
                         lstProp.Items.Add("Ejer");
-                        lstVal.Items.Add(propVal);
                         break;
                     case "Father":
                         lstProp.Items.Add("Far");
-                        lstVal.Items.Add(propVal);
                         break;
                     case "Mother":
                         lstProp.Items.Add("Mor");
-                        lstVal.Items.Add(propVal);
                         break;
                     case "BreedStatus":
                         lstProp.Items.Add("Avlsstatus");
-                        lstVal.Items.Add(propVal);
                         break;
                     default:
                         lstProp.Items.Add(propName);
-                        lstVal.Items.Add(propVal);
                         break;
                 }
             }
@@ -98,12 +74,8 @@ namespace DogKennel.View
         private void NullClick_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lstDogProperties.SelectedItem = null;
-            lstDogValues.SelectedItem = null;
             lstHealthProperties.SelectedItem = null;
-            lstHealthValues.SelectedItem = null;
             lstPedigreeProperties.SelectedItem = null;
-            lstPedigreeValues.SelectedItem = null;
-            lstChildren.SelectedItem = null;
         }
 
         //Define closing of window
@@ -111,6 +83,26 @@ namespace DogKennel.View
         {
             this.Visibility = Visibility.Hidden;
             e.Cancel = true;
+        }
+
+        //DialogbuttonOK
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            int tempDogCount = _viewModel.DogCount;
+
+            string[] strings = new string[19];
+            strings[0] = "112";
+
+            if (!_viewModel.Insert(strings) || _viewModel.DogCount == tempDogCount)
+            {
+                MessageBox.Show($"Hunden kunne ikke indsættes. Tjek om stambogsID allerede\neksisterer i databasen eller om værdierne er indtastet korrekt.", "Tilføj hund");
+            }
+            DialogResult = true;
+        }
+
+        //DialogbuttonCancel
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

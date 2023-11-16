@@ -1,0 +1,180 @@
+﻿<Window
+    x:Class="DogKennel.View.AddDog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DogKennel.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Hund"
+    Width="525"
+    Height="380"
+    Background="DarkGray"
+    Icon="\resources\icon.png"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="BorderBrush" Value="LightGray" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="BorderBrush" Value="LightGray" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="25" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="240" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <WrapPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            Width="Auto"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <TextBox
+                Width="Auto"
+                Height="Auto"
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                IsEnabled="False"
+                Text="StambogsID" />
+            <TextBox
+                Width="Auto"
+                Height="Auto"
+                VerticalAlignment="Center" />
+        </WrapPanel>
+
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="1"
+            Width="Auto"
+            Height="Auto"
+            VerticalAlignment="Bottom"
+            FontWeight="Bold"
+            IsEnabled="False"
+            Text="Information" />
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="4"
+            Width="Auto"
+            Height="Auto"
+            VerticalAlignment="Bottom"
+            FontWeight="Bold"
+            IsEnabled="False"
+            Text="Sundhed" />
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="7"
+            Width="Auto"
+            Height="Auto"
+            VerticalAlignment="Bottom"
+            FontWeight="Bold"
+            IsEnabled="False"
+            Text="Afstamning" />
+        <ListView
+            Name="lstDogProperties"
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="80"
+            Height="175"
+            VerticalAlignment="Top"
+            SelectionChanged="NullClick_SelectionChanged" />
+        <WrapPanel
+            Grid.Row="1"
+            Grid.Column="2"
+            Width="100"
+            Height="175"
+            VerticalAlignment="Top">
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+            <TextBox Width="100" Height="19.4" />
+        </WrapPanel>
+        <ListView
+            Name="lstHealthProperties"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="75"
+            Height="80"
+            VerticalAlignment="Top"
+            SelectionChanged="NullClick_SelectionChanged" />
+        <WrapPanel
+            Grid.Row="1"
+            Grid.Column="5"
+            Width="40"
+            Height="78"
+            VerticalAlignment="Top">
+            <TextBox Width="40" Height="20" />
+            <TextBox Width="40" Height="20" />
+            <TextBox Width="40" Height="20" />
+            <TextBox Width="40" Height="20" />
+        </WrapPanel>
+        <ListView
+            Name="lstPedigreeProperties"
+            Grid.Row="1"
+            Grid.Column="7"
+            Width="75"
+            Height="80"
+            VerticalAlignment="Top"
+            SelectionChanged="NullClick_SelectionChanged" />
+        <WrapPanel
+            Grid.Row="1"
+            Grid.Column="8"
+            Width="100"
+            Height="80"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+            <TextBox Width="40" Height="20" />
+            <TextBox Width="40" Height="20" />
+            <TextBox Width="40" Height="20" />
+            <TextBox Width="40" Height="20" />
+        </WrapPanel>
+        <Button
+            Name="btnDialogOk"
+            Grid.Row="1"
+            Grid.Column="2"
+            Width="50"
+            Margin="0,210,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Click="btnAdd_Click"
+            Content="Tilføj"
+            IsDefault="True" />
+        <Button
+            Name="btnCancel"
+            Grid.Row="1"
+            Grid.Column="7"
+            Width="50"
+            Margin="0,210,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Click="btnCancel_Click"
+            Content="Fortryd"
+            IsCancel="True" />
+    </Grid>
+</Window>

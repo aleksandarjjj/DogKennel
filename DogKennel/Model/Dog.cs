@@ -29,5 +29,9 @@
             Name = name;
             Picture = picture;
         }
+        public override string ToString()
+        {
+            return PedigreeID;
+        }
     }
 }

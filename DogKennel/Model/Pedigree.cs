@@ -17,5 +17,9 @@
             TattooNo = tattooNo;
             Owner = owner;
         }
+        public override string ToString()
+        {
+            return PedigreeID;
+        }
     }
 }

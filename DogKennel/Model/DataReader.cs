@@ -57,7 +57,7 @@ namespace DogKennel.Model
                             //Trim for whitespace by extracting itemArray, trimming the extracted array and reassigning
                             var cellList = row.ItemArray.ToList();
                             row.ItemArray = cellList.Select(x => x.ToString().Trim()).ToArray();
-                            
+
                             //Add row
                             dt.Rows.Add(row.ItemArray);
                         }
