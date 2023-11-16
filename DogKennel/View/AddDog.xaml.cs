@@ -19,9 +19,9 @@ namespace DogKennel.View
             InitializeComponent();
 
             //Define XAML listviews containing all properties and their values
-            ListViewCreator(lstDogProperties, _viewModel.BlankDog().GetType().GetProperties());
-            ListViewCreator(lstHealthProperties, _viewModel.BlankHealth().GetType().GetProperties());
-            ListViewCreator(lstPedigreeProperties, _viewModel.BlankPedigree().GetType().GetProperties());
+            ListViewCreator(lstDogProp, _viewModel.BlankDog().GetType().GetProperties());
+            ListViewCreator(lstHealthProp, _viewModel.BlankHealth().GetType().GetProperties());
+            ListViewCreator(lstPedigreeProp, _viewModel.BlankPedigree().GetType().GetProperties());
         }
 
         //Generic method for populating multiple listviews with property names and values
@@ -73,9 +73,9 @@ namespace DogKennel.View
         //Disable selection for all listviews
         private void NullClick_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lstDogProperties.SelectedItem = null;
-            lstHealthProperties.SelectedItem = null;
-            lstPedigreeProperties.SelectedItem = null;
+            lstDogProp.SelectedItem = null;
+            lstHealthProp.SelectedItem = null;
+            lstPedigreeProp.SelectedItem = null;
         }
 
         //Define closing of window

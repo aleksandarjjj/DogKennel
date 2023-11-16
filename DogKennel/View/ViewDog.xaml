@@ -108,7 +108,7 @@
             IsEnabled="False"
             Text="Afkom" />
         <ListView
-            Name="lstDogProperties"
+            Name="lstDogProp"
             Grid.Row="1"
             Grid.Column="1"
             Width="80"
@@ -116,7 +116,7 @@
             VerticalAlignment="Top"
             SelectionChanged="NullClick_SelectionChanged" />
         <ListView
-            Name="lstDogValues"
+            Name="lstDogVal"
             Grid.Row="1"
             Grid.Column="2"
             Width="100"
@@ -124,7 +124,7 @@
             VerticalAlignment="Top"
             SelectionChanged="NullClick_SelectionChanged" />
         <ListView
-            Name="lstHealthProperties"
+            Name="lstHealthProp"
             Grid.Row="1"
             Grid.Column="4"
             Width="75"
@@ -132,7 +132,7 @@
             VerticalAlignment="Top"
             SelectionChanged="NullClick_SelectionChanged" />
         <ListBox
-            Name="lstHealthValues"
+            Name="lstHealthVal"
             Grid.Row="1"
             Grid.Column="5"
             Width="40"
@@ -140,7 +140,7 @@
             VerticalAlignment="Top"
             SelectionChanged="NullClick_SelectionChanged" />
         <ListView
-            Name="lstPedigreeProperties"
+            Name="lstPedigreeProp"
             Grid.Row="1"
             Grid.Column="7"
             Width="75"
@@ -148,7 +148,7 @@
             VerticalAlignment="Top"
             SelectionChanged="NullClick_SelectionChanged" />
         <ListBox
-            Name="lstPedigreeValues"
+            Name="lstPedigreeVal"
             Grid.Row="1"
             Grid.Column="8"
             Width="100"

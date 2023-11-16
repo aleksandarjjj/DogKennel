@@ -92,7 +92,7 @@
             IsEnabled="False"
             Text="Afstamning" />
         <ListView
-            Name="lstDogProperties"
+            Name="lstDogProp"
             Grid.Row="1"
             Grid.Column="1"
             Width="80"
@@ -116,7 +116,7 @@
             <TextBox Width="100" Height="19.4" />
         </WrapPanel>
         <ListView
-            Name="lstHealthProperties"
+            Name="lstHealthProp"
             Grid.Row="1"
             Grid.Column="4"
             Width="75"
@@ -135,7 +135,7 @@
             <TextBox Width="40" Height="20" />
         </WrapPanel>
         <ListView
-            Name="lstPedigreeProperties"
+            Name="lstPedigreeProp"
             Grid.Row="1"
             Grid.Column="7"
             Width="75"

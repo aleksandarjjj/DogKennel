@@ -13,17 +13,13 @@ namespace DogKennel.View
             //Bind datacontext
             DataContext = _viewModel;
 
-            //Find matching entries for other collections from _viewModel.CurrentDog
-            object CurrentHealth = _viewModel.CurrentHealth();
-            object CurrentPedigree = _viewModel.CurrentPedigree();
-
             //Initialize ListViews by initializing window
             InitializeComponent();
 
             //Define XAML listviews containing all properties and their values
-            ListViewCreator(lstDogProperties, lstDogValues, _viewModel.BlankDog().GetType().GetProperties(), _viewModel.CurrentDog);
-            ListViewCreator(lstHealthProperties, lstHealthValues, _viewModel.BlankHealth().GetType().GetProperties(), CurrentHealth);
-            ListViewCreator(lstPedigreeProperties, lstPedigreeValues, _viewModel.BlankPedigree().GetType().GetProperties(), CurrentPedigree);
+            ListViewCreator(lstDogProp, lstDogVal, _viewModel.BlankDog().GetType().GetProperties(), _viewModel.CurrentDog);
+            ListViewCreator(lstHealthProp, lstHealthVal, _viewModel.BlankHealth().GetType().GetProperties(), _viewModel.CurrentHealth());
+            ListViewCreator(lstPedigreeProp, lstPedigreeVal, _viewModel.BlankPedigree().GetType().GetProperties(), _viewModel.CurrentPedigree());
 
             //Define XAML listview for finding the number of offspring
             foreach (string offspring in _viewModel.GetOffspring())
@@ -97,12 +93,12 @@ namespace DogKennel.View
         //Disable selection for all listviews
         private void NullClick_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lstDogProperties.SelectedItem = null;
-            lstDogValues.SelectedItem = null;
-            lstHealthProperties.SelectedItem = null;
-            lstHealthValues.SelectedItem = null;
-            lstPedigreeProperties.SelectedItem = null;
-            lstPedigreeValues.SelectedItem = null;
+            lstDogProp.SelectedItem = null;
+            lstDogVal.SelectedItem = null;
+            lstHealthProp.SelectedItem = null;
+            lstHealthVal.SelectedItem = null;
+            lstPedigreeProp.SelectedItem = null;
+            lstPedigreeVal.SelectedItem = null;
             lstChildren.SelectedItem = null;
         }
 
