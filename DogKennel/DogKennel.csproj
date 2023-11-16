@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
@@ -9,15 +8,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ApplicationDefinition Include="View\App.xaml" />
+		<PackageReference Include="ExcelDataReader" Version="3.6.0" />
+		<PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+		
 		<None Remove="resources\header_mainwindow.png" />
 		<None Remove="resources\icon.png" />
-	</ItemGroup>
+		<Resource Include="resources\header_mainwindow.png" />
+		<Resource Include="resources\icon.png" />
 
-	<ItemGroup>
-		<ApplicationDefinition Include="View\App.xaml" />
-	</ItemGroup>
-
-	<ItemGroup>
+		
 		<COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
 			<WrapperTool>tlbimp</WrapperTool>
 			<VersionMinor>4</VersionMinor>
@@ -25,18 +28,4 @@
 			<Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
 		</COMReference>
 	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="ExcelDataReader" Version="3.6.0" />
-		<PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Resource Include="resources\header_mainwindow.png" />
-		<Resource Include="resources\icon.png" />
-	</ItemGroup>
-
 </Project>

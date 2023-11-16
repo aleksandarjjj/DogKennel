@@ -9,26 +9,32 @@ namespace DogKennel.View
     public partial class StartupWindow : Window
     {
         ViewModel _viewModel = new ViewModel();
-        ViewDog viewDog;
 
         public StartupWindow()
         {
+            //Bind data
             DataContext = _viewModel;
+
+            //Initialize startup window
             InitializeComponent();
+
+            //Show startup window before messagebox with status for testing connection
             this.Show();
             MainWindow_Sync();
         }
+
+        //Attempt to sync startupwindow with database
         private void MainWindow_Sync()
         {
             bool viewModelBoolean;
 
-            //Test connection by pinging server
+            //Test connection by pinging server with a set connection time
             viewModelBoolean = _viewModel.TestConnection();
 
-            //Synch with local collections
+            //Synch with local ViewModel collections
             if (viewModelBoolean) { viewModelBoolean = _viewModel.SelectAll(); }
 
-            //Prompt messages to user
+            //Prompt message to user
             switch (viewModelBoolean)
             {
                 case true:
@@ -47,9 +53,12 @@ namespace DogKennel.View
             }
         }
 
+        //Open window for adding record
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        //Attempt to read excel file and sync to database
         private void btnAddFile_Click(object sender, RoutedEventArgs e)
         {
             FileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -58,7 +67,7 @@ namespace DogKennel.View
             //Select file to read
             bool? viewBoolean = openFileDialog.ShowDialog();
 
-            //Switch to read file if a file was selected
+            //Switch to read file if a correct file format was selected
             switch (viewBoolean)
             {
                 case true:
@@ -69,7 +78,7 @@ namespace DogKennel.View
                     return;
             }
 
-            //Prompt messages to user
+            //Prompt message to user
             switch (viewModelBoolean)
             {
                 case true:
@@ -80,12 +89,15 @@ namespace DogKennel.View
                     break;
             }
         }
+
+        //Attempt to delete record
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             bool viewModelBoolean;
 
             viewModelBoolean = _viewModel.Delete();
 
+            //Prompt message to user
             switch (viewModelBoolean)
             {
                 case true:
@@ -99,17 +111,21 @@ namespace DogKennel.View
                     break;
             }
         }
+
+        //Attempt to clear database and ViewModel collections
         private void btnTruncate_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult viewResult;
             bool viewModelBoolean;
 
+            //Prompt for user confirmation
             viewResult = MessageBox.Show("Er du sikker på, at du vil rydde databasen?\nDette sletter alle hunde.", "Ryd database", (MessageBoxButton)4);
 
+            //Prompt message to user
             switch (viewResult)
             {
                 case MessageBoxResult.Yes:
-                    viewModelBoolean = _viewModel.Truncate();
+                    viewModelBoolean = _viewModel.TruncateAll();
 
                     if (viewModelBoolean)
                     {
@@ -126,6 +142,8 @@ namespace DogKennel.View
                     break;
             }
         }
+
+        //Test connection to database
         private void btnTestConnection_Click(object sender, RoutedEventArgs e)
         {
             bool viewModelBoolean;
@@ -166,6 +184,8 @@ namespace DogKennel.View
                 btnAdd.IsEnabled = false;
             }
         }
+
+        //Enable delete button if record is selected
         private void TblDogs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TblDogs.SelectedItem != null)
@@ -173,13 +193,13 @@ namespace DogKennel.View
                 btnDelete.IsEnabled = true;
             }
         }
+
+        //Open window with collection information about the given dog
         private void TblDogs_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            viewDog = new ViewDog(_viewModel);
-
             if (TblDogs.SelectedItem != null)
             {
-                viewDog.ShowDialog();
+                new ViewDog(_viewModel).ShowDialog();
             }
         }
     }

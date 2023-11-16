@@ -13,5 +13,21 @@
         public string? Titles { get; set; }
         public string? Name { get; set; }
         public string? Picture { get; set; }
+
+        public Dog() { }
+        public Dog(string? pedigreeID, string? dateOfBirth, string? alive, string? sex, string? colour, string? aK, string? breedStatus, string? dKTitles, string? titles, string? name, string? picture)
+        {
+            PedigreeID = pedigreeID;
+            DateOfBirth = dateOfBirth;
+            Alive = alive;
+            Sex = sex;
+            Colour = colour;
+            AK = aK;
+            BreedStatus = breedStatus;
+            DKTitles = dKTitles;
+            Titles = titles;
+            Name = name;
+            Picture = picture;
+        }
     }
 }

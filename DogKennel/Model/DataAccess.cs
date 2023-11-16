@@ -18,7 +18,9 @@ namespace DogKennel.Model
         {
             using (SqlConnection _con = new SqlConnection(_conString))
             {
+                //Timeout time
                 int timeout = 2000;
+
                 Task task = Task.Run(() =>
                 {
                     try { _con.Open(); }
@@ -32,25 +34,46 @@ namespace DogKennel.Model
                 return false;
             }
         }
-
-        //SQL COMMANDBUILDERS
-        public bool CommandBulkInsertBuilder(DataTable dataTable, Enum e)
+        public bool CommandDelete(string? pedigreeID)
         {
             using (SqlConnection _con = new SqlConnection(_conString))
             {
                 try
                 {
                     _con.Open();
+                    //Determine table from enum type, provide parameter and execute
+                    _command = new SqlCommand($"EXEC spDelete_Dog @PedigreeID", _con);
+                    _command.Parameters.Add("@PedigreeID", SqlDbType.NVarChar).Value = pedigreeID;
+                    _command.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
 
-                    //Initialize
+        //SQL COMMANDBUILDERS
+        public bool CommandBulkInsertAllBuilder(Enum e, DataTable dataTable)
+        {
+            using (SqlConnection _con = new SqlConnection(_conString))
+            {
+                try
+                {
+                    _con.Open();
                     SqlBulkCopy sqlBulk = new SqlBulkCopy(_conString, SqlBulkCopyOptions.FireTriggers);
 
-                    //Map columns based on Enum type
+                    //Map SQL columns based on enum types specifically for the Excel columns has to be done
+                    //when only selecting a number of columns from the available datatable
+
+                    //List with desired columns initialized from provided enum argument
+                    List<string> columnTypes = new List<string>(Enum.GetNames(e.GetType()));
+
+                    //Loop over datacolumns in provided datatable
                     foreach (DataColumn column in dataTable.Columns)
                     {
-                        List<string> columnTypes = new List<string>(Enum.GetNames(e.GetType()));
-
-
+                        //Assing column to SqlBulkCopy if it matches the desired enum column
                         if (columnTypes.Contains(column.ColumnName))
                         {
                             sqlBulk.ColumnMappings.Add(column.ColumnName, column.ColumnName);
@@ -78,6 +101,7 @@ namespace DogKennel.Model
                     _con.Open();
                     DataTable loadedDataTable = new DataTable();
 
+                    //Determine table from enum type and execute
                     _command = new SqlCommand($"SELECT * FROM dbo." + e.GetType().Name, _con);
                     loadedDataTable.Load(_command.ExecuteReader());
 
@@ -98,25 +122,9 @@ namespace DogKennel.Model
                 try
                 {
                     _con.Open();
+
+                    //Determine table from enum type and executre
                     _command = new SqlCommand($"DELETE FROM " + e.GetType().Name, _con);
-                    _command.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
-        public bool CommandDelete(string pedigreeID)
-        {
-            using (SqlConnection _con = new SqlConnection(_conString))
-            {
-                try
-                {
-                    _con.Open();
-                    _command = new SqlCommand($"EXEC spDelete_Dog @PedigreeID", _con);
-                    _command.Parameters.Add("@PedigreeID", SqlDbType.NVarChar).Value = pedigreeID;
                     _command.ExecuteNonQuery();
                     return true;
                 }
@@ -128,19 +136,25 @@ namespace DogKennel.Model
         }
 
         //HELPER METHODS
+        //Construct Dog object from record
         public static Dog DogConstructor(object[] convertedRow)
         {
             Dog dog = new Dog();
+
+            //Get properties from object type
             PropertyInfo[] properties = dog.GetType().GetProperties();
 
+            //Loop through properties and convert (all properties defined as string)
             int i = 0;
             foreach (PropertyInfo property in properties)
             {
+                //Handle NULL values from database
                 if (convertedRow[i].Equals(System.DBNull.Value))
                 {
                     convertedRow[i] = String.Empty;
                 }
 
+                //Assign property
                 property.SetValue(dog, convertedRow[i]);
                 i++;
             }
@@ -150,16 +164,21 @@ namespace DogKennel.Model
         public static Health HealthConstructor(object[] convertedRow)
         {
             Health health = new Health();
+
+            //Get properties from object type
             PropertyInfo[] properties = health.GetType().GetProperties();
 
+            //Loop through properties and convert (all properties defined as string)
             int i = 0;
             foreach (PropertyInfo property in properties)
             {
+                //Handle NULL values from database
                 if (convertedRow[i].Equals(System.DBNull.Value))
                 {
                     convertedRow[i] = String.Empty;
                 }
 
+                //Assign property
                 property.SetValue(health, convertedRow[i]);
                 i++;
             }

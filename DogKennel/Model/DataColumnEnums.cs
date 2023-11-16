@@ -1,5 +1,6 @@
 ﻿namespace DogKennel.Model
 {
+    //Enum defining columns from Excel file
     public enum TblColumnsExcel
     {
         PedigreeID = 1,
@@ -43,6 +44,7 @@
         DateAdded
     }
 
+    //Enum defining columns for database table TblDogs
     public enum TblDogs
     {
         PedigreeID = TblColumnsExcel.PedigreeID,
@@ -58,6 +60,7 @@
         Picture = TblColumnsExcel.Picture
     }
 
+    //Enum defining columns for database table TblDogHealth
     public enum TblDogHealth
     {
         PedigreeID = TblColumnsExcel.PedigreeID,
@@ -67,6 +70,7 @@
         SP = TblColumnsExcel.SP
     }
 
+    //Enum defining columns for database table TblDogPedigree
     public enum TblDogPedigree
     {
         PedigreeID = TblColumnsExcel.PedigreeID,
