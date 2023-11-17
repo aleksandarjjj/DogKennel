@@ -165,12 +165,12 @@
 	@15			NVARCHAR(50)	,
 	@16			NVARCHAR(50)	,
 	@17			NVARCHAR(50)	,
-	@18			NVARCHAR(50)	
+	@18			NVARCHAR(50)	,
+	@19			NVARCHAR(50)
 	AS
-	IF NOT EXISTS(SELECT @1 FROM TblDOgs)
 	BEGIN
 	INSERT INTO TblDogs
-	VALUES (@1, @2, @3, @4, @5, @6, @7, @8, @9, @10)
+	VALUES (@1, @2, @3, @4, @5, @6, @7, @8, @9, @10, @19)
 	INSERT INTO TblDogHealth
 	VALUES (@1, @11, @12, @13, @14)
 	INSERT INTO TblDogPedigree

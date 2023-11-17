@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.Integration;
 
 namespace DogKennel.View
 {
@@ -57,7 +58,14 @@ namespace DogKennel.View
         //Open window for adding record
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            new AddDog(_viewModel).ShowDialog();
+            bool? boolDialog = true;
+            AddDog addDog = new AddDog(_viewModel);
+            addDog.ShowDialog();
+
+            if (addDog.DialogResult == boolDialog)
+            {
+                btnTruncate.IsEnabled = true;
+            }
         }
 
         //Attempt to read excel file and sync to database

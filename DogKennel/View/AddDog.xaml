@@ -59,9 +59,11 @@
                 IsEnabled="False"
                 Text="StambogsID" />
             <TextBox
+                Name="ID"
                 Width="Auto"
                 Height="Auto"
-                VerticalAlignment="Center" />
+                IsEnabled="True"
+                TextChanged="ID_TextChanged" />
         </WrapPanel>
 
         <TextBox
@@ -105,15 +107,51 @@
             Width="100"
             Height="175"
             VerticalAlignment="Top">
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
-            <TextBox Width="100" Height="19.4" />
+            <TextBox
+                Name="DateOfBirth"
+                Width="100"
+                Height="19.4"
+                TextChanged="DateOfBirth_TextChanged" />
+            <TextBox
+                Name="IsAlive"
+                Width="100"
+                Height="19.4"
+                TextChanged="IsAlive_TextChanged" />
+            <TextBox
+                Name="Sex"
+                Width="100"
+                Height="19.4"
+                TextChanged="Sex_TextChanged" />
+            <TextBox
+                Name="Colour"
+                Width="100"
+                Height="19.4"
+                TextChanged="Colour_TextChanged" />
+            <TextBox
+                Name="AK"
+                Width="100"
+                Height="19.4"
+                TextChanged="AK_TextChanged" />
+            <TextBox
+                Name="BreedStatus"
+                Width="100"
+                Height="19.4"
+                TextChanged="BreedStatus_TextChanged" />
+            <TextBox
+                Name="DKTitles"
+                Width="100"
+                Height="19.4"
+                TextChanged="DKTitles_TextChanged" />
+            <TextBox
+                Name="Titles"
+                Width="100"
+                Height="19.4"
+                TextChanged="Titles_TextChanged" />
+            <TextBox
+                Name="Name"
+                Width="100"
+                Height="19.4"
+                TextChanged="Name_TextChanged" />
         </WrapPanel>
         <ListView
             Name="lstHealthProp"
@@ -129,10 +167,26 @@
             Width="40"
             Height="78"
             VerticalAlignment="Top">
-            <TextBox Width="40" Height="20" />
-            <TextBox Width="40" Height="20" />
-            <TextBox Width="40" Height="20" />
-            <TextBox Width="40" Height="20" />
+            <TextBox
+                Name="HD"
+                Width="40"
+                Height="20"
+                TextChanged="HD_TextChanged" />
+            <TextBox
+                Name="AD"
+                Width="40"
+                Height="20"
+                TextChanged="AD_TextChanged" />
+            <TextBox
+                Name="HZ"
+                Width="40"
+                Height="20"
+                TextChanged="HZ_TextChanged" />
+            <TextBox
+                Name="SP"
+                Width="40"
+                Height="20"
+                TextChanged="SP_TextChanged" />
         </WrapPanel>
         <ListView
             Name="lstPedigreeProp"
@@ -149,10 +203,26 @@
             Height="80"
             VerticalAlignment="Top"
             Orientation="Vertical">
-            <TextBox Width="40" Height="20" />
-            <TextBox Width="40" Height="20" />
-            <TextBox Width="40" Height="20" />
-            <TextBox Width="40" Height="20" />
+            <TextBox
+                Name="Father"
+                Width="40"
+                Height="20"
+                TextChanged="Father_TextChanged" />
+            <TextBox
+                Name="Mother"
+                Width="40"
+                Height="20"
+                TextChanged="Mother_TextChanged" />
+            <TextBox
+                Name="TattooNo"
+                Width="40"
+                Height="20"
+                TextChanged="TattooNo_TextChanged" />
+            <TextBox
+                Name="Owner"
+                Width="40"
+                Height="20"
+                TextChanged="Owner_TextChanged" />
         </WrapPanel>
         <Button
             Name="btnDialogOk"

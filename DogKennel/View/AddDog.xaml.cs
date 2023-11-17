@@ -1,4 +1,5 @@
 ﻿using DogKennel.ViewModels;
+using Microsoft.VisualBasic;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +9,7 @@ namespace DogKennel.View
     public partial class AddDog : Window
     {
         ViewModel _viewModel;
+        string[] strings = new string[19];
 
         public AddDog(ViewModel _viewModelPassed)
         {
@@ -90,9 +92,6 @@ namespace DogKennel.View
         {
             int tempDogCount = _viewModel.DogCount;
 
-            string[] strings = new string[19];
-            strings[0] = "112";
-
             if (!_viewModel.Insert(strings) || _viewModel.DogCount == tempDogCount)
             {
                 MessageBox.Show($"Hunden kunne ikke indsættes. Tjek om stambogsID allerede\neksisterer i databasen eller om værdierne er indtastet korrekt.", "Tilføj hund");
@@ -103,6 +102,97 @@ namespace DogKennel.View
         //DialogbuttonCancel
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
+        }
+
+        private void ID_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[0] = ID.Text;
+        }
+
+        private void DateOfBirth_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[1] = DateOfBirth.Text;
+        }
+
+        private void IsAlive_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[2] = IsAlive.Text;
+        }
+
+        private void Sex_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[3] = Sex.Text;
+        }
+
+        private void Colour_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[4] = Colour.Text;
+        }
+
+        private void AK_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[5] = AK.Text;
+        }
+
+        private void BreedStatus_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[6] = BreedStatus.Text;
+        }
+
+        private void DKTitles_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[7] = DKTitles.Text;
+        }
+
+        private void Titles_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[8] = Titles.Text;
+        }
+
+        private void Name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[9] = Name.Text;
+        }
+
+        private void HD_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[10] = HD.Text;
+        }
+
+        private void AD_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[11] = AD.Text;
+        }
+
+        private void HZ_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[12] = HZ.Text;
+        }
+
+        private void SP_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[13] = SP.Text;
+        }
+
+        private void Father_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[14] = Father.Text;
+        }
+
+        private void Mother_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[15] = Mother.Text;
+        }
+
+        private void TattooNo_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[16] = TattooNo.Text;
+        }
+
+        private void Owner_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            strings[17] = Owner.Text;
         }
     }
 }

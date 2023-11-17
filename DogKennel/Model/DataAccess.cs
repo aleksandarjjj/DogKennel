@@ -61,6 +61,8 @@ namespace DogKennel.Model
 
                         commandName = string.Concat(commandName, $"@{i + 1}, ");
                     }
+                    
+                    //Fit command name
                     commandName = commandName.Remove(commandName.Length - 2);
 
                     //Execution
